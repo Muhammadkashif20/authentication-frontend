@@ -27,7 +27,7 @@ const Login = () => {
       setEmail("");
       setPassword("");
       console.log(response.data);
-      // navigation("/")
+      navigation("/dashboard")
     }
 
     catch (error) {
