@@ -15,8 +15,8 @@ const Signup = () => {
         "http://localhost:5000/user/register",
         {
           fullname: fullName,
-          email,
-          password,
+          email:email,
+          password:password,
         }
       );
       toast.success("User Registered Successfully!");

@@ -1,34 +1,32 @@
 import React, { useState } from "react";
 import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Signup from "./Signup";
+import axios from "axios";
+import { toast } from "react-toastify";
 const Login = () => {
  const navigation=useNavigate();
-  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = async () => {
+  const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/user/register",
+        "http://localhost:5000/user/login",
         {
-          fullname: fullName,
-          email,
-          password,
+          email:email,
+          password:password,
         }
       );
-      toast.success("User Registered Successfully!");
+      toast.success("User Logged In Successfully!");
       // Clear fields
-      setFullName("");
       setEmail("");
       setPassword("");
       console.log(response.data);
-      navigation("/login")
+      // navigation("/")
     } 
 
     catch (error) {
-
         console.log("catch=>",error.response?.data);
       toast.error(
           error.response?.data?.msg || "Something went wrong!"
@@ -72,6 +70,8 @@ const Login = () => {
             <div className="flex items-center gap-3 border border-gray-300 rounded-xl px-4 bg-gray-50 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-600 transition transform hover:scale-[1.02] duration-200">
               <HiOutlineMail className="text-gray-400 text-xl" />
               <input
+               value={email}
+                onChange={(e)=>setEmail(e.target.value)}
                 type="email"
                 placeholder="you@company.com"
                 className="w-full py-3 text-sm outline-none bg-transparent placeholder-gray-400"
@@ -87,6 +87,8 @@ const Login = () => {
             <div className="flex items-center gap-3 border border-gray-300 rounded-xl px-4 bg-gray-50 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-600 transition transform hover:scale-[1.02] duration-200">
               <HiOutlineLockClosed className="text-gray-400 text-xl" />
               <input
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
                 type="password"
                 placeholder="••••••••"
                 className="w-full py-3 text-sm outline-none bg-transparent placeholder-gray-400"
@@ -95,8 +97,8 @@ const Login = () => {
           </div>
 
           {/* Button */}
-          <button className="cursor-pointer w-full py-3.5 rounded-xl bg-blue-600 text-white font-semibold tracking-wide hover:bg-blue-700 hover:shadow-lg transition-all duration-300 flex justify-center items-center gap-2">
-            Sign In Securely 
+          <button onClick={handleLogin} className="cursor-pointer w-full py-3.5 rounded-xl bg-blue-600 text-white font-semibold tracking-wide hover:bg-blue-700 hover:shadow-lg transition-all duration-300 flex justify-center items-center gap-2">
+            LogIn Securely 
           </button>
 
           {/* Footer */}
