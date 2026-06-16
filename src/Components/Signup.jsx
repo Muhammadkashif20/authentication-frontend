@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 const Signup = () => {
@@ -8,8 +9,10 @@ const Signup = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+        e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:5000/user/register",
@@ -56,7 +59,7 @@ const Signup = () => {
         </div>
 
         {/* Right Form */}
-        <div className="flex flex-col justify-center sm:p-10">
+        <form onSubmit={handleRegister} className="flex flex-col justify-center sm:p-10">
           <h3 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
             Sign Up 🔒
           </h3>
@@ -96,13 +99,24 @@ const Signup = () => {
             <label className="text-sm font-medium text-gray-700 mb-2 block">Password</label>
             <div className="flex items-center gap-3 border border-gray-300 rounded-xl px-4 bg-gray-50 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-600 transition">
               <HiOutlineLockClosed className="text-gray-400 text-xl" />
-              <input
+            <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
-                className="w-full py-3 text-sm outline-none bg-transparent placeholder-gray-400"
+                className="w-full py-3 text-sm outline-none bg-transparent"
               />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="cursor-pointer text-gray-600 text-xl"
+              >
+                {showPassword ? (
+                  <AiOutlineEyeInvisible />
+                ) : (
+                  <AiOutlineEye />
+                )}
+              </span>
+
             </div>
           </div>
 
@@ -116,13 +130,11 @@ const Signup = () => {
           {/* Footer */}
           <p className="text-center text-sm text-gray-500 mt-4">
             Already have an account?{" "}
-            <Link to="/login">
-              <span className="text-blue-600 font-semibold cursor-pointer hover:underline">
+              <span onClick={() => navigation("/login")}  className="text-blue-600 font-semibold cursor-pointer hover:underline">
                 Sign In
               </span>
-            </Link>
           </p>
-        </div>
+        </form>
 
       </div>
     </div>

@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import Signup from "./Signup";
 import axios from "axios";
 import { toast } from "react-toastify";
 const Login = () => {
- const navigation=useNavigate();
+  const navigation = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
     try {
       const response = await axios.post(
         "http://localhost:5000/user/login",
         {
-          email:email,
-          password:password,
+          email: email,
+          password: password,
         }
       );
       toast.success("User Logged In Successfully!");
@@ -24,12 +28,12 @@ const Login = () => {
       setPassword("");
       console.log(response.data);
       // navigation("/")
-    } 
+    }
 
     catch (error) {
-        console.log("catch=>",error.response?.data);
+      console.log("catch=>", error.response?.data);
       toast.error(
-          error.response?.data?.msg || "Something went wrong!"
+        error.response?.data?.msg || "Something went wrong!"
       );
     }
   };
@@ -54,7 +58,7 @@ const Login = () => {
         </div>
 
         {/* Right Form */}
-        <div className=" sm:p-10">
+        <form onSubmit={handleLogin} className=" sm:p-10">
           <h3 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
             Sign In 🔒
           </h3>
@@ -70,8 +74,8 @@ const Login = () => {
             <div className="flex items-center gap-3 border border-gray-300 rounded-xl px-4 bg-gray-50 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-600 transition transform hover:scale-[1.02] duration-200">
               <HiOutlineMail className="text-gray-400 text-xl" />
               <input
-               value={email}
-                onChange={(e)=>setEmail(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="you@company.com"
                 className="w-full py-3 text-sm outline-none bg-transparent placeholder-gray-400"
@@ -88,29 +92,37 @@ const Login = () => {
               <HiOutlineLockClosed className="text-gray-400 text-xl" />
               <input
                 value={password}
-                onChange={(e)=>setPassword(e.target.value)}
-                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
-                className="w-full py-3 text-sm outline-none bg-transparent placeholder-gray-400"
+                className="w-full py-3 text-sm outline-none bg-transparent"
               />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="cursor-pointer text-gray-600 text-xl"
+              >
+                {showPassword ? (
+                  <AiOutlineEyeInvisible />
+                ) : (
+                  <AiOutlineEye />
+                )}
+              </span>
             </div>
           </div>
 
           {/* Button */}
           <button onClick={handleLogin} className="cursor-pointer w-full py-3.5 rounded-xl bg-blue-600 text-white font-semibold tracking-wide hover:bg-blue-700 hover:shadow-lg transition-all duration-300 flex justify-center items-center gap-2">
-            LogIn Securely 
+            LogIn Securely
           </button>
 
           {/* Footer */}
           <p className="text-center text-sm text-gray-500 mt-6">
             New to the platform?{" "}
-            <Link to="/">
-            <span className="text-blue-600 font-semibold cursor-pointer hover:underline">
+            <span onClick={() => navigation("/")} className="text-blue-600 font-semibold cursor-pointer hover:underline">
               Create an account
             </span>
-            </Link>
           </p>
-        </div>
+        </form>
 
       </div>
     </div>
