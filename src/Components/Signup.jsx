@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 const Signup = () => {
-  
+  const navigation=useNavigate();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +25,7 @@ const Signup = () => {
       setEmail("");
       setPassword("");
       console.log(response.data);
+      navigation("/login")
     } 
 
     catch (error) {
@@ -115,7 +116,7 @@ const Signup = () => {
           {/* Footer */}
           <p className="text-center text-sm text-gray-500 mt-4">
             Already have an account?{" "}
-            <Link to="/">
+            <Link to="/login">
               <span className="text-blue-600 font-semibold cursor-pointer hover:underline">
                 Sign In
               </span>

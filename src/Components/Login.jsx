@@ -1,9 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import Signup from "./Signup";
 const Login = () => {
+ const navigation=useNavigate();
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/user/register",
+        {
+          fullname: fullName,
+          email,
+          password,
+        }
+      );
+      toast.success("User Registered Successfully!");
+      // Clear fields
+      setFullName("");
+      setEmail("");
+      setPassword("");
+      console.log(response.data);
+      navigation("/login")
+    } 
+
+    catch (error) {
+
+        console.log("catch=>",error.response?.data);
+      toast.error(
+          error.response?.data?.msg || "Something went wrong!"
+      );
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300">
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.12)] overflow-hidden grid grid-cols-1 md:grid-cols-2">
@@ -71,7 +102,7 @@ const Login = () => {
           {/* Footer */}
           <p className="text-center text-sm text-gray-500 mt-6">
             New to the platform?{" "}
-            <Link to="/signup">
+            <Link to="/">
             <span className="text-blue-600 font-semibold cursor-pointer hover:underline">
               Create an account
             </span>
