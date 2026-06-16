@@ -2,21 +2,38 @@ import axios from "axios";
 import React, { useState } from "react";
 import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
 import { Link } from "react-router-dom";
-
+import { toast } from "react-toastify";
 const Signup = () => {
+  
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRegister = async () => {
-    const registerApi = await axios.post(
-      "http://localhost:5000/user/register",
-      {
-        fullname: fullName,
-        email:email,
-        password:password,
-      }
-    );
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/user/register",
+        {
+          fullname: fullName,
+          email,
+          password,
+        }
+      );
+      toast.success("User Registered Successfully!");
+      // Clear fields
+      setFullName("");
+      setEmail("");
+      setPassword("");
+      console.log(response.data);
+    } 
+
+    catch (error) {
+
+        console.log("catch=>",error.response?.data);
+      toast.error(
+          error.response?.data?.msg || "Something went wrong!"
+      );
+    }
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
@@ -50,6 +67,8 @@ const Signup = () => {
           <div className="mb-4">
             <label className="text-sm font-medium text-gray-700 mb-2 block">Full Name</label>
             <input
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               type="text"
               placeholder="John Doe"
               className="w-full py-3 px-4 text-sm border border-gray-300 rounded-xl outline-none bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-600 transition"
@@ -62,6 +81,8 @@ const Signup = () => {
             <div className="flex items-center gap-3 border border-gray-300 rounded-xl px-4 bg-gray-50 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-600 transition">
               <HiOutlineMail className="text-gray-400 text-xl" />
               <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="you@company.com"
                 className="w-full py-3 text-sm outline-none bg-transparent placeholder-gray-400"
@@ -75,6 +96,8 @@ const Signup = () => {
             <div className="flex items-center gap-3 border border-gray-300 rounded-xl px-4 bg-gray-50 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-600 transition">
               <HiOutlineLockClosed className="text-gray-400 text-xl" />
               <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="••••••••"
                 className="w-full py-3 text-sm outline-none bg-transparent placeholder-gray-400"
