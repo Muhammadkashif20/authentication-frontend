@@ -1,8 +1,23 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleRegister = async () => {
+    const registerApi = await axios.post(
+      "http://localhost:5000/user/register",
+      {
+        fullname: fullName,
+        email:email,
+        password:password,
+      }
+    );
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
@@ -17,7 +32,7 @@ const Signup = () => {
           </p>
 
           <div className="mt-10 h-1 w-16 bg-white/30 rounded-full"></div>
-            <div className="absolute bottom-15 left-[42%] text-5xl animate-bounce">
+          <div className="absolute bottom-15 left-[42%] text-5xl animate-bounce">
             👋
           </div>
         </div>
@@ -67,11 +82,11 @@ const Signup = () => {
             </div>
           </div>
 
-        
+
 
           {/* Button */}
-          <button className="cursor-pointer w-full py-3 rounded-xl bg-blue-600 text-white font-semibold tracking-wide hover:bg-blue-700 hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
-            Create Account 
+          <button onClick={handleRegister} className="cursor-pointer w-full py-3 rounded-xl bg-blue-600 text-white font-semibold tracking-wide hover:bg-blue-700 hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
+            Create Account
           </button>
 
           {/* Footer */}
