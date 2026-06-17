@@ -24,10 +24,12 @@ const Login = () => {
       );
       toast.success("User Logged In Successfully!");
       // Clear fields
-      setEmail("");
-      setPassword("");
+      // setEmail("");
+      // setPassword("");
       console.log(response.data);
-      navigation("/dashboard")
+      localStorage.setItem("token", response.data.token);
+      console.log("token=>",response.data.token)
+      // navigation("/dashboard")
     }
 
     catch (error) {
@@ -37,6 +39,7 @@ const Login = () => {
       );
     }
   };
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300">
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.12)] overflow-hidden grid grid-cols-1 md:grid-cols-2">

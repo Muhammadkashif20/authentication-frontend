@@ -1,4 +1,5 @@
-import React from "react";
+import { jwtDecode } from "jwt-decode";
+import React, { useEffect, useState } from "react";
 import {
     HiOutlineSearch,
     HiOutlineBell,
@@ -10,15 +11,18 @@ import {
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
+    const [user, setUser] = useState("");
     const navigate = useNavigate();
+    useEffect(()=>{
+        const token=localStorage.getItem("token")
+        if(token){
+            const decoded =jwtDecode(token)
+            setUser(decoded)
+        }
+    },[])
     const handleLogout = () => {
-        localStorage.removeItem("token"); // token clear
-        navigate("/login"); // redirect
-    };
-    // Dummy user (later JWT se replace karna)
-    const user = {
-        fullname: "Muhammad Kashif",
-        email: "kashif@example.com",
+        localStorage.removeItem("token"); 
+        navigate("/login"); 
     };
 
     return (
@@ -96,15 +100,15 @@ const Dashboard = () => {
                         <div className="flex items-center gap-3">
 
                             <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
-                                {user.fullname.charAt(0)}
+                                {user?.fullname?.charAt(0)}
                             </div>
 
                             <div>
                                 <p className="font-semibold text-sm">
-                                    {user.fullname}
+                                    {user?.fullname}
                                 </p>
                                 <p className="text-xs text-gray-500">
-                                    {user.email}
+                                    {user?.email}
                                 </p>
                             </div>
 
@@ -185,7 +189,7 @@ const Dashboard = () => {
                     <div className="bg-white p-6 rounded-2xl shadow flex flex-col items-center">
 
                         <div className="w-20 h-20 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl font-bold">
-                            {user.fullname.charAt(0)}
+                            {user?.fullname?.charAt(0)}
                         </div>
 
                         <h2 className="mt-4 text-xl font-bold">
