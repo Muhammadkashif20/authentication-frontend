@@ -24,12 +24,12 @@ const Login = () => {
       );
       toast.success("User Logged In Successfully!");
       // Clear fields
-      // setEmail("");
-      // setPassword("");
+      setEmail("");
+      setPassword("");
       console.log(response.data);
-      localStorage.setItem("token", response.data.token);
-      console.log("token=>",response.data.token)
-      // navigation("/dashboard")
+      localStorage.setItem("token", response.data.data.token);
+      console.log("token=>",response.data.data.token)
+      navigation("/dashboard")
     }
 
     catch (error) {
