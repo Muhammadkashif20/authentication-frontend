@@ -1,4 +1,3 @@
-import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import {
     HiOutlineSearch,
@@ -11,15 +10,14 @@ import {
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
+    const navigate=useNavigate()
     const [user, setUser] = useState("");
-    const navigate = useNavigate();
-    useEffect(()=>{
-        const token=localStorage.getItem("token")
-        if(token){
-            const decoded =jwtDecode(token)
-            setUser(decoded)
-        }
-    },[])
+   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+        setUser(JSON.parse(storedUser));
+    }
+}, []);
     const handleLogout = () => {
         localStorage.removeItem("token"); 
         navigate("/login"); 

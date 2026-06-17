@@ -28,7 +28,9 @@ const Login = () => {
       setPassword("");
       console.log(response.data);
       localStorage.setItem("token", response.data.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.data.user));
       console.log("token=>",response.data.data.token)
+      console.log("user=>",response.data.data.user)
       navigation("/dashboard")
     }
 
